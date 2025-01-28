@@ -7,11 +7,20 @@ import Uploadpage from "./upload/index.js";
 function App() {
   return (
     <div>
-      <Routes>
-        <Route path="/" element={<MainPageComponent />} />
-        <Route path="/product/:id" element={<ProductPage />} />
-        <Route path="/upload" element={<Uploadpage />} />
-      </Routes>
+      <div id="header">
+        <div id="header-area">
+          <img src="/images/icons/logo.png" />
+        </div>
+      </div>
+      <div id="body">
+        <Routes>
+          <Route path="/" element={<MainPageComponent />} />
+          <Route path="/products/:id" element={<ProductPage />} />
+          <Route path="/upload" element={<Uploadpage />} />
+        </Routes>
+      </div>
+
+      <div id="footer"></div>
     </div>
   );
 }
