@@ -7,9 +7,7 @@ function MainPage() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     axios
-      .get(
-        "https://af794327-4b48-47d4-b1d7-184f9c26aa68.mock.pstmn.io/products"
-      )
+      .get("http://localhost:8080/products")
       .then(function (result) {
         const products = result.data.products;
         setProducts(products);
@@ -26,7 +24,7 @@ function MainPage() {
       </div>
       <h1>Products</h1>
       <div id="product-list">
-        {products.map((product, index) => {
+        {products.map(function (product, index) {
           return (
             <div className="product-card">
               <Link className="product-link" to={`/products/${product.id}`}>
