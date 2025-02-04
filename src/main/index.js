@@ -4,17 +4,30 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { API_URL } from "../config/constants";
+import { Carousel } from "antd";
 
 dayjs.extend(relativeTime);
 
 function MainPage() {
   const [products, setProducts] = useState([]);
+  const [banners, setBanners] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:8080/products")
+      .get(`${API_URL}/products`)
       .then(function (result) {
         const products = result.data.products;
         setProducts(result.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    axios
+      .get(`${API_URL}/banners`)
+      .then(function (result) {
+        const banners = result.data.banners;
+        setBanners(result.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -23,17 +36,30 @@ function MainPage() {
 
   return (
     <div>
-      <div id="banner">
-        <img src="images/banners/banner1.png" />
-      </div>
-      <h1>Products</h1>
+      <Carousel autoplay>
+        {banners.map(function (banner, index) {
+          return (
+            <Link className="banner-link" to={banner.href}>
+              <div id="banner">
+                <img src={`${API_URL}/${banner.imegeUrl}`} />
+              </div>
+            </Link>
+          );
+        })}
+      </Carousel>
+
+      <h1 id="product-headline">Products</h1>
       <div id="product-list">
         {products.map(function (product, index) {
           return (
             <div className="product-card">
+              {product.soldout === true && <div className="product-blur" />}
               <Link className="product-link" to={`/products/${product.id}`}>
                 <div>
-                  <img className="product-img" src={product.imageUrl} />
+                  <img
+                    className="product-img"
+                    src={`${API_URL}/${product.imageUrl}`}
+                  />
                 </div>
                 <div className="product-contents">
                   <span className="product-name">{product.name}</span>
